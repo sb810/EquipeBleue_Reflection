@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Action : MonoBehaviour
 {
-    private bool isPunching = false;
+    public GameObject hand; 
+    private Animator anim;
+    
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            isPunching = true;
-            Debug.Log("punched");
-            isPunching = false;
+            anim.SetTrigger("Punch");
         }
         
     }
 
-
-
+    void Start()
+    {
+        anim = hand.GetComponent<Animator>();
+    }
 
 
 }
