@@ -5,21 +5,14 @@ using UnityEngine;
 public class DamageSystem : MonoBehaviour
 {
     [SerializeField] private int damageAmount = 1;
-    [SerializeField] private Collider2D hurtingThing;
-    [SerializeField] private GameObject theThingBeingHurt;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("entered");
-        if (collision == hurtingThing)
-        
+        HealthSystem healthSystem = other.GetComponent<HealthSystem>();
+
+        if (healthSystem != null)
         {
-            Debug.Log("hurt");
-            HealthSystem healthSystem = theThingBeingHurt.GetComponent<HealthSystem>();
-            if (healthSystem != null)
-            {
-                healthSystem.TakeDamage(damageAmount);
-            }
+            healthSystem.TakeDamage(damageAmount);
         }
     }
 }

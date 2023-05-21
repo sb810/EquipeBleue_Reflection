@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - paticule
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: particul
+    uniqueID: 4030337757
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
