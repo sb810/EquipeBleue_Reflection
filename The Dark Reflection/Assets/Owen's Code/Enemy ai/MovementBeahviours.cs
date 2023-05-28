@@ -11,12 +11,18 @@ public class MovementBeahviours : MonoBehaviour
     [SerializeField] private float detectionRange = 5f;
     [SerializeField] private float chaseSpeed = 3f;
 
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private Animator animator;
+
     private Transform player;
     private int currentPatrolIndex;
     private bool isPatrolling = true;
     private bool isChasingPlayer = false;
+    private bool isAttacking = false;
 
     private Collider2D detectionCollider;
+    private float lastAttackTime = 0f;
 
     private void Start()
     {
@@ -36,6 +42,10 @@ public class MovementBeahviours : MonoBehaviour
         else if (isPatrolling)
         {
             Patrol();
+        }
+        else if (isAttacking)
+        {
+            Attack();
         }
     }
 
@@ -94,11 +104,39 @@ public class MovementBeahviours : MonoBehaviour
         // Move towards the player
         transform.position = Vector2.MoveTowards(transform.position, player.position, chaseSpeed * Time.deltaTime);
 
-        // Rotate towards the player's position
+        // Rotate towards the player
         Vector2 direction = player.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
-        transform.rotation = targetRotation;
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        // Check if the player is within attack range
+        if (Vector2.Distance(transform.position, player.position) <= attackRange)
+        {
+            isChasingPlayer = false;
+            isAttacking = true;
+        }
+    }
+
+    private void Attack()
+    {
+        // Stop movement and play attack animation
+        animator.SetTrigger("Attack");
+
+        // Check if enough time has passed since the last attack
+        if (Time.time - lastAttackTime >= attackCooldown)
+        {
+            // Perform the attack logic here
+            // ...
+            // Reset the attack cooldown timer
+            lastAttackTime = Time.time;
+        }
+
+        // Rotate towards the player during attack animation
+        Vector2 direction = player.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -114,8 +152,8 @@ public class MovementBeahviours : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isPatrolling = true;
             isChasingPlayer = false;
+            isPatrolling = true;
         }
     }
 }
