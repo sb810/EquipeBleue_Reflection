@@ -6,6 +6,7 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     public Transform character_pos;
+    public float speed = 0.025f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,24 +21,57 @@ public class Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        while(Input.GetKey(KeyCode.UpArrow))
+        if(Input.GetKey(KeyCode.UpArrow))
         {
-            character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y + 1);
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y + (speed * 2));
+            }
+            else
+            {
+                character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y + speed);
+            }
+            
         }
 
-        while(Input.GetKey(KeyCode.DownArrow))
+        if(Input.GetKey(KeyCode.DownArrow))
         {
-            character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y- 1);
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y - (speed * 2));
+            }
+            else
+            {
+                character_pos.position = new Vector2(character_pos.position.x, character_pos.position.y - speed);
+            }
+
+                
         }
 
-        while(Input.GetKey(KeyCode.RightArrow))
+        if(Input.GetKey(KeyCode.RightArrow))
         {
-            character_pos.position = new Vector2(character_pos.position.x + 1, character_pos.position.y);
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                character_pos.position = new Vector2(character_pos.position.x + (speed * 2), character_pos.position.y);
+            }
+            else
+            {
+                character_pos.position = new Vector2(character_pos.position.x + speed, character_pos.position.y);
+            }
+                
         }
 
-        while(Input.GetKey(KeyCode.LeftArrow))
+        if(Input.GetKey(KeyCode.LeftArrow))
         {
-            character_pos.position = new Vector2(character_pos.position.x - 1, character_pos.position.y);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                character_pos.position = new Vector2(character_pos.position.x - (speed * 2), character_pos.position.y);
+            }
+            else
+            {
+                character_pos.position = new Vector2(character_pos.position.x - speed, character_pos.position.y);
+            }
+                
         }
     }
 }
